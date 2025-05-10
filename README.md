@@ -1,4 +1,4 @@
-![LLM Codex Logo](A_badge_logo_in_digital_art_medium_displays_%22LLM_C.png)
+![LLM Codex Logo](llm-codex.png)
 
 # 🧠 llm-codex
 
