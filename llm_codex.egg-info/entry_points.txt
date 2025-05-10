@@ -1,0 +1,2 @@
+[console_scripts]
+llm-codex = llm_codex.main:main

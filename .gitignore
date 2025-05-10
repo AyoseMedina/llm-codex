@@ -1,0 +1,16 @@
+# Entorno virtual
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de backup
+*.bak_*
+
+# Carpetas de logs locales
+.llm_codex_logs/
+
+# Archivos temporales
+*.log
+.DS_Store

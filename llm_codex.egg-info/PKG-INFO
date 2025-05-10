@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: llm-codex
+Version: 1.0.0
+Summary: CLI para generar, editar y ejecutar código con LLM Studio desde cualquier carpeta.
+Author: Ayose Medina
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Dynamic: author
+Dynamic: classifier
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
