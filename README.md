@@ -134,15 +134,6 @@ Los archivos modificados siempre se respaldan primero.
 
 ---
 
-## 🧪 Sugerencias futuras
-
-- `--run` para ejecutar sin preguntar  
-- `--no-log` para evitar guardar  
-- `--clear-log` para limpiar el historial  
-- `--chat archivo.py` para modo conversación
-
----
-
 ## 🧑‍💻 Autor
 
 Desarrollado por Ayose Medina  

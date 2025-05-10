@@ -134,15 +134,6 @@ All edited files are backed up first.
 
 ---
 
-## 🧪 Future ideas
-
-- `--run` to execute without confirmation  
-- `--no-log` to skip logging  
-- `--clear-log` to reset history  
-- `--chat file.py` for interactive mode
-
----
-
 ## 🧑‍💻 Author
 
 Developed by Ayose Medina  
