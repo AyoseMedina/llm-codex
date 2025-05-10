@@ -5,23 +5,24 @@ import subprocess
 import re
 from datetime import datetime
 
-# Conexión fija al servidor LLM Studio en Windows (accesible desde WSL)
+# Configuración del LLM local
 LLM_URL = "http://192.168.1.12:1234/v1/completions"
 HEADERS = {"Content-Type": "application/json"}
 
-# Trabaja desde la carpeta actual
+# Trabajar desde la carpeta actual
 PROYECTO_DIR = os.getcwd()
 LOG_DIR = os.path.join(PROYECTO_DIR, ".llm_codex_logs")
 LOG_FILE = os.path.join(LOG_DIR, "codex_log.txt")
 
+MODEL = "qwen2.5 coder"  # usado solo como referencia
+
 os.makedirs(LOG_DIR, exist_ok=True)
 
 def enviar_prompt(prompt):
-    print(f"🔗 Conectando a: {LLM_URL}")
     prompt_formateado = f"[INST]\n{prompt}\n[/INST]"
     response = requests.post(LLM_URL, json={
         "prompt": prompt_formateado,
-        "max_tokens": 1024,
+        "max_tokens": 512,
         "temperature": 0.2
     }, headers=HEADERS)
 
@@ -30,22 +31,14 @@ def enviar_prompt(prompt):
 
     raw_output = response.json()["choices"][0]["text"]
 
-    # Buscar y extraer solo el bloque de código si viene envuelto en markdown
-    if "```" in raw_output:
-        bloques = re.findall(r"```(?:\w+)?\n(.*?)```", raw_output, re.DOTALL)
-        if bloques:
-            return bloques[0].strip()
-
-    # Si no hay bloque markdown, limpiamos posibles explicaciones
+    # Limpieza del resultado
     cleaned = raw_output
+    cleaned = re.sub(r"```.*?```", "", cleaned, flags=re.DOTALL)
     cleaned = re.sub(r"\[/?INST\]", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"<.*?>", "", cleaned)
     cleaned = re.sub(r"\*\*.*?\*\*", "", cleaned)
-    cleaned = re.sub(r"(?i)(aquí tienes|explicación|nota|ejemplo|¡espero|😊|😉|😃|😄|😅|🙂|🤓).*", "", cleaned)
-    cleaned = re.sub(r"(?i)(let me think|wait,|so,|then,|first,|what if|how to implement|okay).*", "", cleaned)
 
     return cleaned.strip()
-
 
 def guardar_archivo(nombre_archivo, contenido):
     ruta = os.path.join(PROYECTO_DIR, nombre_archivo)
@@ -77,9 +70,12 @@ def mostrar_log():
 def listar_archivos():
     print("\n--- Archivos en la carpeta actual ---")
     archivos = os.listdir(PROYECTO_DIR)
-    for f in archivos:
-        if os.path.isfile(f) and not f.startswith("."):
-            print(f"- {f}")
+    if not archivos:
+        print("No hay archivos.")
+    else:
+        for f in archivos:
+            if os.path.isfile(f) and not f.startswith("."):
+                print(f"- {f}")
 
 def editar_archivo(nombre_archivo, prompt):
     ruta = os.path.join(PROYECTO_DIR, nombre_archivo)
@@ -139,6 +135,30 @@ def detectar_extension(prompt):
     else:
         return ".py"
 
+
+def modo_chat():
+    print("🧠 Modo Chat Codex activo. Escribe ':exit' para salir.")
+    while True:
+        prompt = input("🟡 Tú: ").strip()
+        if prompt.lower() in [":exit", ":salir", "salir"]:
+            print("👋 Cerrando modo chat.")
+            break
+        if not prompt:
+            continue
+        try:
+            codigo = enviar_prompt(prompt)
+            print("\n--- Código generado ---\n")
+            print(codigo)
+            guardar = input("\n💾 ¿Deseas guardar este código? [s/n]: ").strip().lower()
+            if guardar == "s":
+                base = "_".join(prompt.split()[:5]).replace("/", "_")
+                ext = detectar_extension(prompt)
+                archivo = base + ext
+                ruta = guardar_archivo(archivo, codigo)
+                guardar_log(prompt, archivo, codigo)
+        except Exception as e:
+            print(f"⚠️ Error: {e}")
+
 def main():
     if len(sys.argv) == 2 and sys.argv[1] == "--log":
         mostrar_log()
@@ -150,6 +170,10 @@ def main():
 
     if len(sys.argv) >= 4 and sys.argv[1] == "--edit":
         editar_archivo(sys.argv[2], sys.argv[3])
+        sys.exit(0)
+
+    if len(sys.argv) == 2 and sys.argv[1] == "--chat":
+        modo_chat()
         sys.exit(0)
 
     if len(sys.argv) < 2:

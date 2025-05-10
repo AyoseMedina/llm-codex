@@ -1,4 +1,4 @@
-![LLM Codex Logo](llm-codex.png)
+![LLM Codex Logo](A_badge_logo_in_digital_art_medium_displays_%22LLM_C.png)
 
 # 🧠 llm-codex
 
@@ -22,7 +22,7 @@
 1. Clona este repositorio:
 
 ```bash
-git clone https://github.com/AyoseMedina/llm-codex.git
+git clone https://github.com/tu_usuario/llm-codex.git
 cd llm-codex
 ```
 
@@ -134,7 +134,37 @@ Los archivos modificados siempre se respaldan primero.
 
 ---
 
+💬 Modo Chat Interactivo (--chat)
+Ahora puedes interactuar con llm-codex en modo chat usando:
+
+bash
+Copiar
+Editar
+llm-codex --chat
+¿Cómo funciona?
+Te pide instrucciones en lenguaje natural (como en un chat).
+
+Genera solo el código limpio a partir de cada entrada.
+
+Muestra el resultado y pregunta si deseas guardarlo.
+
+Si respondes s, se guarda con un nombre inteligente y se registra en el log.
+
+Puedes salir en cualquier momento escribiendo :exit o :salir.
+
+Ejemplo:
+bash
+Copiar
+Editar
+llm-codex --chat
+🧠 Modo Chat Codex activado. Escribe ':exit' para salir.
+🟡 Tú: crea una función en Python que invierta una cadena
+💾 ¿Deseas guardar este código? [s/n]: s
+
+---
+
 ## 🧑‍💻 Autor
 
 Desarrollado por Ayose Medina  
 2025 · IT Director · Python + LLM + Business Intelligence
+

@@ -134,6 +134,36 @@ All edited files are backed up first.
 
 ---
 
+---
+
+## 💬 Interactive Chat Mode (`--chat`)
+
+You can now interact with `llm-codex` in chat mode using:
+
+```bash
+llm-codex --chat
+```
+
+### How it works:
+- Prompts you for natural language instructions (like a chat).
+- Generates clean code from each input.
+- Displays the result and asks if you want to save it.
+- If you say `s`, the code is saved with a smart filename and logged.
+- Exit at any time using `:exit` or `:salir`.
+
+### Example:
+
+```bash
+llm-codex --chat
+🧠 Codex Chat Mode activated. Type ':exit' to quit.
+🟡 You: create a python function to reverse a string
+💾 Do you want to save this code? [s/n]: s
+```
+
+It's perfect for iterating quickly on code ideas directly from the terminal.
+
+---
+
 ## 🧑‍💻 Author
 
 Developed by Ayose Medina  
