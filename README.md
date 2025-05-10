@@ -22,7 +22,7 @@
 1. Clona este repositorio:
 
 ```bash
-git clone https://github.com/tu_usuario/llm-codex.git
+git clone https://github.com/AyoseMedina/llm-codex.git
 cd llm-codex
 ```
 
