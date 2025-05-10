@@ -19,10 +19,11 @@ MODEL = "qwen2.5 coder"  # usado solo como referencia
 os.makedirs(LOG_DIR, exist_ok=True)
 
 def enviar_prompt(prompt):
+    print(f"🔗 Conectando a: {LLM_URL}")
     prompt_formateado = f"[INST]\n{prompt}\n[/INST]"
     response = requests.post(LLM_URL, json={
         "prompt": prompt_formateado,
-        "max_tokens": 512,
+        "max_tokens": 1024,
         "temperature": 0.2
     }, headers=HEADERS)
 
@@ -31,12 +32,19 @@ def enviar_prompt(prompt):
 
     raw_output = response.json()["choices"][0]["text"]
 
-    # Limpieza del resultado
+    # Buscar y extraer solo el bloque de código si viene envuelto en markdown
+    if "```" in raw_output:
+        bloques = re.findall(r"```(?:\w+)?\n(.*?)```", raw_output, re.DOTALL)
+        if bloques:
+            return bloques[0].strip()
+
+    # Si no hay bloque markdown, limpiamos posibles explicaciones
     cleaned = raw_output
-    cleaned = re.sub(r"```.*?```", "", cleaned, flags=re.DOTALL)
     cleaned = re.sub(r"\[/?INST\]", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"<.*?>", "", cleaned)
     cleaned = re.sub(r"\*\*.*?\*\*", "", cleaned)
+    cleaned = re.sub(r"(?i)(aquí tienes|explicación|nota|ejemplo|¡espero|😊|😉|😃|😄|😅|🙂|🤓).*", "", cleaned)
+    cleaned = re.sub(r"(?i)(let me think|wait,|so,|then,|first,|what if|how to implement|okay).*", "", cleaned)
 
     return cleaned.strip()
 
